@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Jobs Nestle</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        h1, h2, label {
+            font-size: x-large;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 2em;
+        }
+
+        .job-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .job-card {
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            width: 300px;
+            padding: 20px;
+            text-decoration: none;
+            color: #000;
+            transition: transform 0.2s;
+        }
+
+        .job-card:hover {
+            transform: scale(1.05);
+        }
+
+        .job-card h3 {
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+
+        .job-card p {
+            margin: 0.5em 0;
+            color: #6c757d;
+        }
+
+        .job-card p:last-child {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .view-job-button {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            color: #000;
+        }
+
+        .view-job-button a {
+            display: inline-block;
+            color: #000000;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .view-job-button a:hover {
+            text-decoration: underline;
+        }
+
+        /* Style for job details card */
+        .job-details {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: none;
+            z-index: 1000; /* Ensure it appears on top of other content */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <%- include('partials/header') %>
+
+    <main class="container mt-5">
+        <h1>Welcome to the Jobs Nestle Platform</h1>
+        <h2>Find Your Dream Jobs</h2>
+
+        <!-- Search Container -->
+        <div class="container mx-auto p-4">
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="text" id="search-title" class="form-control" placeholder="Search by Title">
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="search-company" class="form-control" placeholder="Search by Company">
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="search-location" class="form-control" placeholder="Search by Location">
+                </div>
+                <div class="col-md-3">
+                    <button id="search-button" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Displaying job listings -->
+        <div class="container mx-auto p-4">
+            <div id="job-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
+                <% if (jobs && jobs.length > 0) { %>
+                    <% jobs.forEach(job => { %>
+                        <div class="job-card bg-white p-4 rounded shadow">
+                            <h2 class="text-2xl font-bold"><%= job.title %></h2>
+                            <p class="text-gray-700"><%= job.company_name %></p>
+                            <p class="text-gray-500"><%= job.candidate_required_location %></p>
+                            <a href="/jobs/<%= job.id %>" class="btn btn-info">View Job</a>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p class="text-center text-gray-500">No jobs found.</p>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Job Details Card (Uncommented now) -->
+        <div class="job-details" id="job-details" style="display: none;">
+            <h2 id="job-details-title">No Title</h2>
+            <p id="job-details-company">No Company</p>
+            <p id="job-details-location">No Location</p>
+            <p id="job-details-description">No Description</p>
+            <button id="apply-button" class="btn btn-success">Apply</button>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const jobDetails = document.getElementById('job-details');
+            const jobDetailsTitle = document.getElementById('job-details-title');
+            const jobDetailsCompany = document.getElementById('job-details-company');
+            const jobDetailsLocation = document.getElementById('job-details-location');
+            const jobDetailsDescription = document.getElementById('job-details-description');
+            
+            const searchTitleInput = document.getElementById('search-title');
+            const searchCompanyInput = document.getElementById('search-company');
+            const searchLocationInput = document.getElementById('search-location');
+            const jobList = document.getElementById('job-list');
+            
+            // Parse jobs from the server (Correctly embedded EJS syntax)
+            const jobs = <%- JSON.stringify(jobs || []) %>;
+    
+            const filterJobs = () => {
+                const searchTitle = searchTitleInput.value.trim().toLowerCase();
+                const searchCompany = searchCompanyInput.value.trim().toLowerCase();
+                const searchLocation = searchLocationInput.value.trim().toLowerCase();
+    
+                const filteredJobs = jobs.filter(job => 
+                    (searchTitle === '' || job.title.toLowerCase().includes(searchTitle)) &&
+                    (searchCompany === '' || job.company_name.toLowerCase().includes(searchCompany)) &&
+                    (searchLocation === '' || job.candidate_required_location.toLowerCase().includes(searchLocation))
+                );
+    
+                jobList.innerHTML = '';
+                filteredJobs.forEach(job => {
+                    const jobCard = document.createElement('div');
+                       jobCard.classList.add('job-card');
+                         jobCard.innerHTML = `
+                      <h3>${job.title}</h3>
+                        <p><strong>Company:</strong> ${job.company_name}</p>
+                        <p><strong>Location:</strong> ${job.candidate_required_location}</p>
+        <!-- Updated button to <a> tag -->
+                  <a href="/jobs/${job.id}" class="btn btn-info">View Job</a>
+    `;
+    jobList.appendChild(jobCard);
+});
+            }
+    
+            document.getElementById('search-button').addEventListener('click', filterJobs);
+            
+            // Event listener for job detail view
+            jobList.addEventListener('click', (e) => {
+                if (e.target && e.target.matches('button.view-job-button')) {
+                    const jobId = e.target.getAttribute('data-id');
+                    const job = jobs.find(job => job.id === jobId);
+                    if (job) {
+                        jobDetailsTitle.textContent = job.title;
+                        jobDetailsCompany.textContent = job.company_name;
+                        jobDetailsLocation.textContent = job.candidate_required_location;
+                        jobDetailsDescription.textContent = job.description;
+                        jobDetails.style.display = 'block';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

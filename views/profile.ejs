@@ -1,0 +1,7 @@
+<%- include('layout', { title: 'Profile', user: user }) %>
+
+<h1>Welcome, <%= user.name %></h1>
+<p>Email: <%= user.email %></p>
+<!-- Display other profile information here -->
+
+<a href="/edit-profile" class="button">Edit Profile</a>
