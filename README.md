@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # # JobNestle
+=======
+# JobNestle
+>>>>>>> 5f67d52bcec840a38844b69cf4222a4d97484425
 
 Welcome to JobNestle, the ultimate job search and career management platform. JobNestle connects job seekers with the best opportunities while empowering employers to find their ideal candidates. With a sleek, user-friendly interface and cutting-edge technology, JobNestle aims to redefine the job-hunting experience.
 
@@ -133,3 +137,7 @@ Special thanks to the Remotive API and Reed API for job data.
 Inspiration from modern job portal designs.
 
 Crafted with ❤️ by [Ar Shaikh /Ar's Team]
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5f67d52bcec840a38844b69cf4222a4d97484425
